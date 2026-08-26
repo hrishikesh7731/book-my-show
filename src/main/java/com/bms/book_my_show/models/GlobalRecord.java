@@ -1,0 +1,34 @@
+package com.bms.book_my_show.models;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Inheritance(strategy = InheritanceType.JOINED)
+@Entity
+@Table(name = "global-records")
+public class GlobalRecord {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID sysId;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime createdBy;
+    private LocalDateTime updatedBy;
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+}
