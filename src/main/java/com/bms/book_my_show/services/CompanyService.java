@@ -13,21 +13,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class CompanyService {
 
-    private CompanyRepository companyRepository;
+    private final CompanyRepository companyRepository;
+    private final UserService userService;
 
     @Autowired
-    public CompanyService(CompanyRepository companyRepository){
+    public CompanyService(CompanyRepository companyRepository,UserService userService){
         this.companyRepository=companyRepository;
+        this.userService=userService;
     }
 
-    public Company registerTheaterCompany(RegisterCompanyDto registerCompanyDto, CompanyType companyType){
+    public Company registerCompany(RegisterCompanyDto registerCompanyDto, CompanyType companyType){
 
         Company company= CompanyTransformer.mapRegisterCompanyDtoToCompany(registerCompanyDto,companyType);
         log.info("Calling repo layer to save company record in db.");
         company= saveCompany(company);
+        userService.createCompanyAdminUser(company);
 
         return company;
-
     }
     public Company saveCompany(Company company){
         return this.companyRepository.save(company);

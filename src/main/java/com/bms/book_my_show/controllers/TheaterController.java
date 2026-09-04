@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/theater")
 public class TheaterController {
 
-    private TheaterService theaterService;
+    private final TheaterService theaterService;
 
     @Autowired
     public TheaterController(TheaterService theaterService){
